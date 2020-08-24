@@ -1,0 +1,26 @@
+﻿<#@ template language="C#" debug="true"  #>
+<#@ output extension=".txt" #>
+<#@ assembly name="System.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ parameter name="classname" type="System.String" #>
+<#
+
+var name=(classname == null ? "" : classname);
+
+#>
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
+
+namespace WP.<#=name#>s.Dto
+{
+    /// <summary>
+    /// 论文提交-添加
+    /// </summary>
+    [AutoMap(typeof(WP.<#=name#>s.<#=name#>))]
+    public class Edit<#=name#>Input : EntityDto<long>
+    {
+
+	}
+}

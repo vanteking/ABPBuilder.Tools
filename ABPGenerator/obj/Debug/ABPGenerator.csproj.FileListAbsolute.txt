@@ -1,0 +1,16 @@
+F:\core\ABPGenerator\ABPGenerator\bin\Debug\ABPGenerator.exe.config
+F:\core\ABPGenerator\ABPGenerator\bin\Debug\ABPGenerator.exe
+F:\core\ABPGenerator\ABPGenerator\bin\Debug\ABPGenerator.pdb
+F:\core\ABPGenerator\ABPGenerator\obj\Debug\ABPGenerator.Default.resources
+F:\core\ABPGenerator\ABPGenerator\obj\Debug\ABPGenerator.Properties.Resources.resources
+F:\core\ABPGenerator\ABPGenerator\obj\Debug\ABPGenerator.csproj.GenerateResource.cache
+F:\core\ABPGenerator\ABPGenerator\obj\Debug\ABPGenerator.csproj.CoreCompileInputs.cache
+F:\core\ABPGenerator\ABPGenerator\obj\Debug\ABPGenerator.exe
+F:\core\ABPGenerator\ABPGenerator\obj\Debug\ABPGenerator.pdb
+F:\core\ABPGenerator\ABPGenerator\obj\Debug\ABPGenerator.csprojAssemblyReference.cache
+F:\core\ABPGenerator\ABPGenerator\bin\Debug\Dapper.dll
+F:\core\ABPGenerator\ABPGenerator\bin\Debug\Dapper.xml
+F:\core\ABPGenerator\ABPGenerator\obj\Debug\ABPGenerator.csproj.CopyComplete
+F:\core\ABPGenerator\ABPGenerator\bin\Debug\CSkin.xml
+F:\core\ABPGenerator\ABPGenerator\bin\Debug\Microsoft.VisualStudio.TextTemplating.10.0.dll
+F:\core\ABPGenerator\ABPGenerator\bin\Debug\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.dll

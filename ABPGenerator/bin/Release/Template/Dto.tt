@@ -1,0 +1,39 @@
+﻿<#@ template language="C#" debug="true"  #>
+<#@ output extension=".txt" #>
+<#@ assembly name="System.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ parameter name="classname" type="System.String" #>
+<#
+
+var name=(classname == null ? "" : classname);
+
+#>
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
+using System;
+using System.ComponentModel.DataAnnotations;
+
+
+namespace WP.<#=name#>s.Dto
+{
+    /// <summary>
+    /// 论文提交
+    /// </summary>
+    [AutoMap(typeof(WP.<#=name#>s.<#=name#>))]
+    public class <#=name#>Dto : EntityDto<long>
+    {
+
+
+
+        public long? CreatorUserId { get; set; }
+        public DateTime CreationTime { get; set; }
+        public long? LastModifierUserId { get; set; }
+        public DateTime? LastModificationTime { get; set; }
+        public long? DeleterUserId { get; set; }
+        public DateTime? DeletionTime { get; set; }
+        public bool IsDeleted { get; set; }
+
+	}
+}

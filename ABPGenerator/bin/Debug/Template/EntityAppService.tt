@@ -1,0 +1,142 @@
+<#@ template language="C#" debug="true"  #>
+<#@ output extension=".txt" #>
+<#@ assembly name="System.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ parameter name="classname" type="System.String" #>
+
+<#
+
+var name=(classname == null ? "" : classname);
+
+#>
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
+using Abp.Extensions;
+using Abp.Domain.Repositories;
+using Webdiyer.WebControls.Mvc;
+using WP.Extensions.IQueryable;
+using System.Collections.Generic;
+using WP.<#=name #>s.Dto;
+using Abp.Runtime.Caching;
+
+namespace WP.<#=name #>s
+{
+
+ public interface I<#=name #>AppService : WPAppServiceBase, I<#=name #>AppService
+    {
+        private readonly IRepository<<#=name #>s.<#=name #>, long> _<#=name #>Repository;
+       
+        public ReviewAppService(IRepository<<#=name #>, long> <#=name #>Repository)
+        {
+            _<#=name #>Repository = <#=name #>Repository;
+          
+        }
+
+        public List<<#=name #>Dto> GetAll()
+        {
+            return _<#=name #>Repository.GetAll().OrderByDescending(m => m.CreationTime).ToList().MapTo<List<<#=name #>Dto>>();
+        }
+
+        public MvcPagerListResultDto<<#=name #>Dto> GetPageList(Get<#=name #>Input input)
+        {
+           
+            var query = _<#=name #>Repository.GetAll();
+            var result = query.OrderBy(input.SortName.IsNullOrWhiteSpace() == true ? "CreationTime" : input.SortName, input.SortDesc.HasValue == false || input.SortDesc == 1).ToPagedList(input.Page ?? 1, input.PageSize ?? WPConsts.DefaultPageSize);
+
+            var rdata = result.ToList().MapTo<List<<#=name #>Dto>>();
+
+            return new MvcPagerListResultDto<<#=name #>Dto>
+            {
+                Total = new PagedList<<#=name #>Dto>(rdata, result.CurrentPageIndex, result.PageSize, result.TotalItemCount)
+            };
+        }
+
+
+        public List<<#=name #>Dto> GetList(List<long> ids)
+        {
+            return _<#=name #>Repository.GetAll().Where(m => ids.Contains(m.Id)).OrderByDescending(m => m.CreationTime).MapTo<List<ReviewDto>>();
+        }
+
+     
+
+
+        public async Task<<#=name #>Dto> Create(Create<#=name #>Input Input)
+        {
+            var entity = Input.MapTo<Review>();
+
+            entity.Id = await _<#=name #>Repository.InsertAndGetIdAsync(entity);
+
+            return entity.MapTo<<#=name #>Dto>();
+        }
+
+        public virtual async Task<int> CreateListAsync(List<Create<#=name #>Input> input)
+        {
+            var result = 0;
+            foreach (var item in input)
+            {
+                await Create(item);
+                result++;
+
+
+            }
+            return result;
+        }
+
+
+        public async Task Del(long Id)
+        {
+            await _<#=name #>Repository.DeleteAsync(Id);
+        }
+
+        public void Delete(long Id)
+        {
+            _<#=name #>Repository.Delete(Id);
+        }
+
+        /// <summary>
+        /// 不从缓存
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<<#=name #>Dto> GetAsyncById(long Id)
+        {
+            var model = await _<#=name #>Repository.GetAsync(Id);
+            return model.MapTo<<#=name #>Dto>();
+        }
+
+        public ReviewDto GetById(long Id)
+        {
+            var model = _<#=name #>Repository.GetAll().FirstOrDefault(m => m.Id == Id).MapTo<<#=name #>Dto>();
+            return model.MapTo<<#=name #>Dto>();
+        }
+
+        public async Task<Edit<#=name #>Input> GetEditById(long Id)
+        {
+            var model = await _<#=name #>Repository.GetAsync(Id);
+            return model.MapTo<Edit<#=name #>Input>();
+        }
+
+        public async Task<Edit<#=name #>Dto> GetEditDtoById(long Id)
+        {
+            var model = await _<#=name #>Repository.GetAsync(Id);
+            return model.MapTo<Edit<#=name #>Dto>();
+        }
+
+        public async Task Edit(Edit<#=name #>Input Input)
+        {
+            var entity = await _<#=name #>Repository.GetAsync(Input.Id);
+
+            Input.MapTo(entity);
+
+            await _<#=name #>Repository.UpdateAsync(entity);
+        }
+
+  
+    }
+}
