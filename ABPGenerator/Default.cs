@@ -28,10 +28,10 @@ namespace ABPBuilder.Tools
 
 
             //配置默认的连接数据库字符串
-            txtServerName.Text = @"192.168.1.223\sqk2k8r2";
-            txtUsername.Text = "sa";
-            txtPwd.Text = "sa2008r2";
-            txtDatatName.Text = "TJ_MedicalAdmissionsDB";
+            txtServerName.Text = @"xxx.xxx.xxx.223\sqk2k8r2";
+            txtUsername.Text = "xx";
+            txtPwd.Text = "xxx";
+            txtDatatName.Text = "xxDB";
 
             txtPermissionName.Text = "PermissionNames.Sys";
 
