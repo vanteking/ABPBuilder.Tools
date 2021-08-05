@@ -1,0 +1,214 @@
+﻿
+
+@using Abp.Web.Mvc.Extensions;
+@using WP.Extensions.Enums;
+@using Webdiyer.WebControls.Mvc
+@model PagedList<WP.s.Dto.Dto>
+@{
+
+    string _cur_title  = L(WP.Authorization.);
+    ViewBag.Title = _cur_title;
+    Layout = Layouts._Layout_Admin;
+
+    //面包屑
+    ViewBag._Page_Breadcrumb_ = new List<BreadcrumbModel> {
+new BreadcrumbModel { Title = L(WP.Authorization.) },
+new BreadcrumbModel { Title = _cur_title }
+};
+
+    var _input = ViewBag._input_ as WP.s.Dto.GetInput;
+     
+}
+
+<div class="box">
+    <div class="box-header nobg">
+
+        @using (Html.BeginForm(MVC.EWebSysMgr..Index(), FormMethod.Get, new { @class = "form-inline", id="js-search" }))
+        {
+          
+            <div class="pull-left">
+                <div class="form-group">
+                    <input type="text" style="width:240px" class="form-control" id="js-key" name="Title" placeholder="班车名称" value="@(_input.Title)" />
+                </div>
+                <span>&nbsp;</span>
+
+                <button type="submit" class="btn btn-primary"><i class="@Icon.Search"></i>搜索</button>
+                <span>&nbsp;</span>
+                <a href="@Url.Action(MVC.EWebSysMgr..Index())" title="重置" class="btn btn-white"><i class="@Icon.Repeat"></i>重置</a>
+
+            </div>
+
+            <div class="pull-right">
+                <a class="btn btn-white" href="@Url.Action("Create")"><i class="@Icon.Create"></i>添加</a>
+                <span>&nbsp;</span>
+                <a class="btn btn-danger" id="js-delete" href="javascript:;"><i class="@Icon.DeleteAll"></i>批量删除</a>
+            </div>
+            <div class="clearfix"></div>
+
+
+         
+        }
+
+    </div>
+    <div class="box-body no-padding">
+
+        <table id="js-data-list" class="table table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <div class="checkBox">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="sel-all-info">#
+                            </label>
+                        </div>
+                    </th>
+                    <th>标题</th>
+                    <th>添加时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int index = 0;}
+                @if (Model != null && Model.Count > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr id="tr-info-@item.Id">
+                            <td class="text-center" style="width:80px;">
+                                <div class="checkBox">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="js-item" value="@item.Id" data-id="@item.Id" />@(Model.StartItemIndex + index)
+                                    </label>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>@item.CreationTime.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                                <a href="@Url.Action("Edit",new { id=item.Id})"><i class="@Icon.Edit fw"></i>编辑</a><span>&nbsp;</span>
+                                <a href="javascript:;" class="text-danger js-delete" data-id="@item.Id" data-name="">
+                                    <i class="@Icon.Delete fw"></i>删除
+                                </a>
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                }
+
+            </tbody>
+        </table>
+
+        @if (Model.Count == 0)
+        {
+            <div class="text-center">
+                @Html.Partial("_Nodata", 0)
+            </div>
+        }
+
+    </div>
+
+    <div class="box-footer">
+        @Html.Pager(Model, new PagerOptions
+        {
+            PageIndexParameterName = "page",
+            ContainerTagName = "ul",
+            PagerItemTemplate = "<li>{0}</li>",
+            CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+            DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>",
+            Id = "bootstrappager",
+            CssClass = "pagination pull-right"
+        }).Options(m => m.AddHtmlAttribute("style", "margin:0;"))
+        <div class="pull-left" style="margin: 3px; padding: 3px;">
+            <span>@string.Format("第{0}/{1}页 共{2}条", Model.CurrentPageIndex, Model.TotalPageCount, Model.TotalItemCount)</span>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function(){
+        
+           /* 删除 */
+                $('.js-delete').on('click', function () {
+                    var $this = $(this);
+                    abp.message.confirm('请谨慎操作', '确定要删除[' + $this.data('name') + ']吗?', function (isok) {
+                        if (isok === true) {
+                            abp.ui.setBusy();
+
+                            $.ajax({
+                                url: "@Url.Action("Delete")",
+                                data: { id: $this.data('id') },
+                                type: "post",
+                                contentType: 'application/x-www-form-urlencoded',
+                                dataType: 'JSON'
+                            }).done(function (rdata) {
+                                if (rdata.success === true) {
+                                    abp.layer.success("操作成功", 2300);
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 2500);
+                                } else {
+                                    abp.layer.error("操作失败");
+                                }
+                            }).always(function () {
+                                abp.ui.clearBusy();
+                            });
+
+                        }
+                    })
+                    /*confirm end*/
+                });
+        /* 删除 end*/
+
+
+                       /* 多选删除 */
+                $('#js-delete').on('click', function () {
+                    var list = [];
+                    var $checklist = $(".js-item:checkbox:checked");
+                    $checklist.each(function (k, v) {
+                        list.push($(v).val());
+                    });
+                    if (list.length == 0) {
+                        abp.layer.warn("请至少选择一项")
+                        return false;
+                    }
+                    abp.message.confirm('请谨慎操作', '确定要删除选中的数据吗?', function (isok) {
+                        if (isok === true) {
+                            abp.ui.setBusy();
+
+                            $.ajax({
+                                url: "@Url.Action("BatchDelete")",
+                                data: { ids: list },
+                                type: "post",
+                                contentType: 'application/x-www-form-urlencoded',
+                                dataType: 'JSON'
+                            }).done(function (rdata) {
+                                if (rdata.success === true) {
+                                    abp.layer.success("操作成功", 2300);
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 2500);
+                                } else {
+                                    abp.layer.error("操作失败");
+                                }
+                            }).always(function () {
+                                abp.ui.clearBusy();
+                            });
+
+                        }
+                    });
+                    /*confirm end*/
+                });
+                /* 多选删除 end*/
+
+                $(".js-download").click(function () {
+
+                    var _sform = $("#js-search").serializeFormToObject();
+                    window.location.href = "@Url.Action("Export")?"+_sform;
+                });
+        
+        });
+    </script>
+    
+    }

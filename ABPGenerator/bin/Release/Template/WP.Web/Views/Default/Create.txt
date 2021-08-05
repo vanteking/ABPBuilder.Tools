@@ -1,0 +1,105 @@
+﻿
+@using Abp.Web.Mvc.Extensions
+@using Abp.Authorization.Users
+@model WP.s.Dto.CreateInput
+@{
+
+
+    string _cur_title  = L(WP.Authorization._Create);
+    ViewBag.Title = _cur_title;
+    Layout = Layouts._Layout_Admin;
+
+    //面包屑
+    ViewBag._Page_Breadcrumb_ = new List<BreadcrumbModel> {
+new BreadcrumbModel { Title = L(WP.Authorization.) },
+new BreadcrumbModel { Title = _cur_title }
+};
+
+}
+
+<form id="js-form" role="form" novalidate class="form-horizontal">
+   
+    <div class="box box-default">
+        <div class="box-header"></div>
+        <div class="box-body">
+
+		<!--
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="text-red">*</span>标题</label>
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                </div>
+            </div> -->
+
+
+        </div>
+        <div class="box-footer text-center"> 
+		<a href="javascript:history.back(-1)" class="btn btn-white"><i class="@Icon.Cancel"></i>取消</a>
+		 <span>&nbsp;</span>
+            <button type="submit" class="btn btn-blue"><i class="@Icon.Save"></i><span>保存</span></button>
+           
+           
+        </div>
+    </div>
+</form>
+
+@section scripts{
+
+    <script type="text/javascript">
+        (function () {
+            $(function () {
+
+                $(".wdate").val("");
+
+
+                var _$form = $('#js-form');
+                _$form.validate();
+
+                /* <submit> */
+                _$form.find('button[type="submit"]').click(function (e) {
+                    e.preventDefault();
+
+                   /* var Title = $("#Title").val();
+                    if (Title == "") {
+                        abp.layer.warn("请输入标题");
+                        $("#Title").focus();
+                        return false;
+                    }*/
+        
+
+                   // $("#Cnt").val(CKEDITOR.instances.Cnt.getData());
+
+                    var model = _$form.serializeFormToObject(); //serializeFormToObject is defined in main.js
+
+                    abp.ui.setBusy();
+
+                     $.ajax({
+                            url: "@Url.Action("CreateData")",
+                            type: "post",
+                            dataType: "json",
+                            data: model
+                        }).done(function (rdata) {
+                            if (rdata.success) {
+                                abp.layer.success(rdata.result, function () {
+                                    window.location.href = '@(Url.Action("Index"))';
+                                });
+                            } else {
+                                abp.layer.error(rdata.error.message);
+                            }
+                        }).fail(function () {
+                            abp.layer.error("操作失败");
+                        }).always(function () {
+                            abp.ui.clearBusy();
+                     });
+                    //end
+
+
+
+
+                });
+                /* </submit> */
+
+            });
+        })();
+    </script>
+}

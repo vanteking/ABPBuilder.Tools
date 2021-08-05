@@ -19,7 +19,6 @@ F:\core\ABPBuilder.Tools\ABPGenerator\bin\Release\Dapper.dll
 F:\core\ABPBuilder.Tools\ABPGenerator\bin\Release\Microsoft.VisualStudio.TextTemplating.10.0.dll
 F:\core\ABPBuilder.Tools\ABPGenerator\bin\Release\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.dll
 F:\core\ABPBuilder.Tools\ABPGenerator\bin\Release\Dapper.xml
-F:\core\ABPBuilder.Tools\ABPGenerator\obj\Release\ABPBuilder.Tools.csprojAssemblyReference.cache
 F:\core\ABPBuilder.Tools\ABPGenerator\obj\Release\ABPBuilder.Tools.Default.resources
 F:\core\ABPBuilder.Tools\ABPGenerator\obj\Release\ABPGenerator.Properties.Resources.resources
 F:\core\ABPBuilder.Tools\ABPGenerator\obj\Release\ABPBuilder.Tools.csproj.GenerateResource.cache
@@ -27,3 +26,4 @@ F:\core\ABPBuilder.Tools\ABPGenerator\obj\Release\ABPBuilder.Tools.csproj.CoreCo
 F:\core\ABPBuilder.Tools\ABPGenerator\obj\Release\ABPBuilder.Tools.csproj.CopyComplete
 F:\core\ABPBuilder.Tools\ABPGenerator\obj\Release\ABPGenerator.exe
 F:\core\ABPBuilder.Tools\ABPGenerator\obj\Release\ABPGenerator.pdb
+F:\core\ABPBuilder.Tools\ABPGenerator\obj\Release\ABPBuilder.Tools.csprojAssemblyReference.cache

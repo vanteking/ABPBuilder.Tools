@@ -1,0 +1,136 @@
+
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
+using Abp.Extensions;
+using Abp.Domain.Repositories;
+using Webdiyer.WebControls.Mvc;
+using WP.Extensions.IQueryable;
+using System.Collections.Generic;
+using WP.s.Dto;
+using Abp.Runtime.Caching;
+using Abp.Auditing;
+using Abp.Authorization;
+using WP.Authorization;
+
+namespace WP.s
+{
+    [DisableAuditing]
+    public class AppService : WPAppServiceBase, IAppService
+    {
+        private readonly IRepository<s., long> _Repository;
+       
+        public AppService(IRepository<, long> Repository)
+        {
+            _Repository = Repository;
+          
+        }
+
+        public List<Dto> GetAll()
+        {
+            return _Repository.GetAll().OrderByDescending(m => m.CreationTime).ToList().MapTo<List<Dto>>();
+        }
+
+        public MvcPagerListResultDto<Dto> GetPageList(GetInput input)
+        {
+           
+            var query = _Repository.GetAll()
+			 .WhereIf(input.Ids!=null&& input.Ids.Count()>0, m => input.Ids.Contains(m.Id))
+			
+			;
+            var result = query.OrderBy(input.SortName.IsNullOrWhiteSpace() == true ? "CreationTime" : input.SortName, input.SortDesc.HasValue == false || input.SortDesc == 1).ToPagedList(input.Page ?? 1, input.PageSize ?? WPConsts.DefaultPageSize);
+
+            var rdata = result.ToList().MapTo<List<Dto>>();
+
+            return new MvcPagerListResultDto<Dto>
+            {
+                Total = new PagedList<Dto>(rdata, result.CurrentPageIndex, result.PageSize, result.TotalItemCount)
+            };
+        }
+
+
+        public List<Dto> GetList(List<long> ids)
+        {
+            return _Repository.GetAll().Where(m => ids.Contains(m.Id)).OrderByDescending(m => m.CreationTime).MapTo<List<Dto>>();
+        }
+
+     
+
+        [Audited]
+        public async Task<Dto> Create(CreateInput Input)
+        {
+            var entity = Input.MapTo<>();
+
+            entity.Id = await _Repository.InsertAndGetIdAsync(entity);
+
+            return entity.MapTo<Dto>();
+        }
+
+        public virtual async Task<int> CreateListAsync(List<CreateInput> input)
+        {
+            var result = 0;
+            foreach (var item in input)
+            {
+                await Create(item);
+                result++;
+            }
+            return result;
+        }
+
+        [Audited]
+        public async Task Delete(long Id)
+        {
+
+		   var entity = await _Repository.GetAsync(Id);
+
+		    //是本人创建的数据 || 有超管系统设置权限 才可以删除
+            if (entity.CreatorUserId == AbpSession.UserId.Value || PermissionChecker.IsGranted(PermissionNames.Sys_Setting))
+            {
+            await _Repository.DeleteAsync(Id);
+			}
+        }
+
+        public async Task<Dto> GetById(long Id)
+        {
+            var model =await  _Repository.FirstOrDefaultAsync(m => m.Id == Id);
+            if (model == null) { return null; }
+            return model.MapTo<Dto>();
+        }
+
+        public async Task<EditInput> GetEditById(long Id)
+        {
+            var model = await _Repository.GetAsync(Id);
+            return model.MapTo<EditInput>();
+        }
+
+        
+        [Audited]
+        public async Task Edit(EditInput Input)
+        {
+            var entity = await _Repository.GetAsync(Input.Id);
+
+            //是本人创建的数据 || 有超管系统设置权限 才可以修改
+            if (entity.CreatorUserId == AbpSession.UserId.Value || PermissionChecker.IsGranted(PermissionNames.Sys_Setting))
+            {
+
+            Input.MapTo(entity);
+
+            await _Repository.UpdateAsync(entity);
+
+			}
+        }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        [Audited][AbpAuthorize(PermissionNames.Sys_Setting)]
+        public async Task BatchDeleteAsync(List<long> input)
+        {
+            //TODO:批量删除前的逻辑判断，是否允许删除
+            await _Repository.DeleteAsync(s => input.Contains(s.Id));
+        }
+    }
+}

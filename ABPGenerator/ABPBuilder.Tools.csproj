@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSkin">
-      <HintPath>C:\Users\think\Desktop\CSkin 16.1.14.3\CSkin 16.1.14.3\CSkin 4.0\CSkin.dll</HintPath>
-    </Reference>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.2\lib\net40\Dapper.dll</HintPath>
     </Reference>
@@ -72,6 +69,86 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Template\WP.Application\CreateInput.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CreateInput.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Application\Dto.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Dto.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Application\EditInput.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditInput.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Application\EntityAppService.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntityAppService.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Application\GetInput.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GetInput.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Web\Controller.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Controller.txt</LastGenOutput>
+    </Content>
+    <Content Include="Template\WP.Web\Controller.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Controller.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Default\Create.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Create.txt</LastGenOutput>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Default\Create.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Create.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Default\Edit.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Edit.txt</LastGenOutput>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Default\Edit.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Edit.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Default\Index.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Index.txt</LastGenOutput>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Default\Index.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Metronic\Create.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Create.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Metronic\Edit.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Edit.txt</LastGenOutput>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Metronic\Edit.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Edit.tt</DependentUpon>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Metronic\Index.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.tt</DependentUpon>
+    </Content>
     <EmbeddedResource Include="Default.resx">
       <DependentUpon>Default.cs</DependentUpon>
     </EmbeddedResource>
@@ -95,6 +172,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Template\WP.Web\Views\Metronic\Index.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Index.txt</LastGenOutput>
+    </Content>
+    <Content Include="Template\WP.Web\Views\Metronic\Create.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Create.txt</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -102,72 +187,38 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Template\CreateInput.tt">
+    <Content Include="Template\WP.Application\CreateInput.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CreateInput.txt</LastGenOutput>
     </Content>
-    <Content Include="Template\CreateInput.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CreateInput.tt</DependentUpon>
-    </Content>
-    <Content Include="Template\Dto.tt">
+    <Content Include="Template\WP.Application\Dto.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Dto.txt</LastGenOutput>
     </Content>
-    <Content Include="Template\Dto.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Dto.tt</DependentUpon>
-    </Content>
-    <Content Include="Template\EditDto.tt">
+    <Content Include="Template\WP.Application\EditDto.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EditDto.txt</LastGenOutput>
     </Content>
-    <Content Include="Template\EditDto.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EditDto.tt</DependentUpon>
-    </Content>
-    <Content Include="Template\EditInput.tt">
+    <Content Include="Template\WP.Application\EditInput.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EditInput.txt</LastGenOutput>
     </Content>
-    <Content Include="Template\EditInput.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EditInput.tt</DependentUpon>
-    </Content>
-    <Content Include="Template\EntityAppService.tt">
+    <Content Include="Template\WP.Application\EntityAppService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EntityAppService1.txt</LastGenOutput>
+      <LastGenOutput>EntityAppService.txt</LastGenOutput>
     </Content>
-    <Content Include="Template\EntityAppService1.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EntityAppService.tt</DependentUpon>
-    </Content>
-    <Content Include="Template\GetInput.tt">
+    <Content Include="Template\WP.Application\GetInput.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GetInput.txt</LastGenOutput>
     </Content>
-    <Content Include="Template\GetInput.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GetInput.tt</DependentUpon>
-    </Content>
-    <Content Include="Template\Interface.tt">
+    <Content Include="Template\WP.Application\Interface.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Interface1.txt</LastGenOutput>
-    </Content>
-    <Content Include="Template\Interface1.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Interface.tt</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,0 +1,13 @@
+﻿
+using System;
+using System.ComponentModel.DataAnnotations;
+using Abp.AutoMapper;
+
+namespace WP.s.Dto
+{
+   [AutoMap(typeof(WP.s.))]
+    public class CreateInput
+    {
+
+    }
+}

@@ -1,0 +1,255 @@
+﻿<#@ template language="C#" debug="true"  #>
+<#@ output extension=".txt" #>
+<#@ assembly name="System.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ parameter name="classname" type="System.String" #>
+<#@ parameter name="permissionName" type="System.String" #>
+
+<#
+
+var name=(classname == null ? "" : classname);
+var _permissionName=(permissionName == null ? "" : permissionName);
+#>
+
+@using Abp.Web.Mvc.Extensions;
+@using Webdiyer.WebControls.Mvc
+@using Microsoft.AspNet.Identity
+@using WP.Extensions.Enums;
+
+@model PagedList<WP.<#=name#>s.Dto.<#=name#>Dto>
+@{
+    string _cur_title =  L(WP.Authorization.<#=_permissionName#>);
+
+    ViewBag.Title = _cur_title;
+    Layout = Layouts._Layout_Admin;
+
+    //搜索的dto
+    var _input = ViewBag._input_ as WP.<#=name#>s.Dto.Get<#=name#>Input;
+}
+
+@section plugins_css{
+
+
+}
+<div class="row">
+
+    <div class="col-lg-12">
+        <!--begin::Advance Table Widget 1-->
+        <div class="card card-custom card-stretch gutter-b">
+            <!--begin::Header-->
+            <div class="card-header border-0 py-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="card-label font-weight-bolder text-dark">@_cur_title</span>
+                </h3>
+
+                <div class="card-toolbar">
+                </div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body py-0">
+
+                <div class="mb-10">
+                    @using (Html.BeginForm(MVC.EWebSysMgr.<#=name#>.Index(), FormMethod.Get, new { @class = "", id = "js-search" }))
+                    {
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-xl-6">
+
+                                <div class="row align-items-center">
+                                    <div class="col-md-6 my-2 my-md-0">
+
+                                        <div class="input-icon">
+                                            <input type="text" value="@_input.Title" name="Title" class="form-control form-control-solid" placeholder="" id="kt_datatable_search_query">
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                   
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6 col-xl-6 mt-5 mt-lg-0  text-right">
+
+                                <button type="submit" class="btn btn-primary  font-size-sm  mr-2"><i class="@Icon.Search"></i> 搜索</button>
+                                <a href="@Url.Action(MVC.EWebSysMgr.<#=name#>.Index())" class="btn btn-primary  font-size-sm mr-5">
+                                    <i class="@Icon.Reply"></i> 重置
+                                </a>
+
+                                <a href="@Url.Action("Create")" class="btn btn-primary  font-size-sm mr-2">
+                                    <i class="@Icon.Create"></i> 添加
+                                </a>
+                               
+
+                                <a href="javascript:;" class="btn btn-danger  font-size-sm " id="js-delete">
+                                    <i class="@Icon.Details"></i> 批量删除
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+                <!--begin::Table-->
+                <div class="table-responsive">
+
+                    <table class="table table-head-custom table-vertical-center table-hover" id="kt_advance_table_widget_1">
+                        <thead>
+                            <tr class="text-left">
+                                <th class="pl-0" style="width: 20px">
+                                    <label class="checkbox checkbox-lg checkbox-inline">
+                                        <input type="checkbox" value="1">
+                                        <span></span>
+                                    </label>
+                                </th>
+                                <th>标题</th>
+                    <th>添加时间</th>
+                   
+                                <th class="text-right pr-8" style="min-width: 150px">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+
+                             
+                            <tr id="tr-item-@item.Id">
+                                 <td class="pl-0">
+                                    <label class="checkbox checkbox-lg checkbox-inline">
+                                        <input type="checkbox" value="@item.Id" class="js-item">
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td></td>           
+                                <td class="text-right">
+
+                                    <a data-toggle="tooltip" data-placement="top" data-original-title="编辑" href="@Url.Action("Edit",new { id=item.Id})" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-4">
+                                        @Html.Partial("~/Areas/EWebSysMgr/Views/Layout/_SVG/Edit.cshtml")
+                                    </a>
+
+                                    <a data-toggle="tooltip" data-placement="top" data-original-title="查看" href="@Url.Action("Detail",new {  id=item.Id})" class="btn btn-icon btn-light btn-hover-primary btn-sm  mr-4">
+                                        @Html.Partial("~/Areas/EWebSysMgr/Views/Layout/_SVG/Detail.cshtml")
+                                    </a>
+
+                                    <a data-toggle="tooltip" data-placement="top" data-original-title="删除" href="javascript:;" data-name="" data-id="@item.Id" class="btn btn-icon btn-light btn-hover-danger btn-sm js-delete mr-4">
+                                        @Html.Partial("~/Areas/EWebSysMgr/Views/Layout/_SVG/Delete.cshtml")
+                                    </a>
+
+                                </td>
+                            </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                    @if (Model.Count == 0)
+                    {
+                        <div class="text-center">
+                            @Html.Partial("_Nodata", 0)
+                        </div>
+                    }
+                </div>
+                <!--end::Table-->
+
+
+
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Advance Table Widget 1-->
+        <!--begin::Pagination-->
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div class="d-flex flex-wrap py-2 font-size-h6-md">
+                @Html.Pager(Model, new PagerOptions
+                {
+                    PageIndexParameterName = "page",
+                    ContainerTagName = "ul",
+                    PagerItemTemplate = "<li>{0}</li>",
+                    CurrentPagerItemTemplate = "<li class=\"active\"><a href= \"#\">{0}</ a></li>",
+                    DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</ a></li>",
+                    CssClass = "pagination pull-right",
+                    FirstPageText = "<i class='ki ki-bold-double-arrow-back'></i>",
+                    LastPageText = "<i class='ki ki-bold-double-arrow-next'></i>",
+                    PrevPageText = "<i class='ki ki-bold-arrow-back'></i>",
+                    NextPageText = "<i class='ki ki-bold-arrow-next'></i>"
+                })
+            </div>
+            <div class="d-flex align-items-center font-size-h6-md">
+                @string.Format("第{0}/{1}页 共{2}条", Model.CurrentPageIndex, Model.TotalPageCount, Model.TotalItemCount)
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        (function () {
+            $(function () {
+
+                var _service = abp.services.app.<#=name#>;
+
+                $('.js-delete').on('click', function () {
+                    var $this = $(this);
+                    var _id = $this.data('id');
+                    var _name= $this.data('name');
+
+                    abp.layer.confirm("确定要删除【" + _name + "】信息吗？", '', function (e) {
+                       if (e.value) {
+
+                            KTApp.blockPage();
+                           _service.delete(_id).done(function () {
+                                abp.layer.success("操作成功");
+                                $("#tr-item-" + _id).remove();
+                            }).always(function () {
+                                KTApp.unblockPage();
+                            });
+                        }
+                    });
+                    /*confirm end*/
+                });
+
+                /* 多选删除 */
+                $('#js-delete').on('click', function () {
+                    var list = [];
+                    var $checklist = $(".js-item:checkbox:checked");
+                    $checklist.each(function (k, v) {
+                        list.push($(v).val());
+                    });
+                    if (list.length == 0) {
+                        toastr.error("请至少选择一项")
+                        return false;
+                    }
+                    abp.layer.confirm('确定要删除选中的数据吗?',"", function (e) {
+                        if (e.value) {
+                            KTApp.blockPage();
+                            _service.batchDelete(list).done(function () {
+                                abp.layer.success("操作成功");
+                                window.location.reload();
+                            }).always(function () {
+                               KTApp.unblockPage();
+                            });
+                        }
+                    });
+                    /*confirm end*/
+                });
+                /* 多选删除 end*/
+
+           
+            });
+        })();
+    </script>
+
+}
