@@ -3,7 +3,7 @@
 
 界面预览：
 
-![avatar](../ABPGenerator/Assets/images/20210630171055.png)
+![avatar](./ABPGenerator/Assets/images/20210630171055.png)
 
 
 界面很简单，输入数据库连接字符串，选择要生成的表后，就能在桌面生成底层代码，然后复制到项目里即可。
